@@ -70,7 +70,7 @@ def simulate_playoffs(num_simulations=10000):
     # Calculate probabilities
     elim_probs = {team: wins/num_simulations for team, wins in eliminator_wins.items()}
     q2_probs = {team: wins/num_simulations for team, wins in qualifier2_wins.items()}
-    final_probs = {team: wins/num_simulations for suitably in final_wins.items()}
+final_probs = {team: wins/num_simulations for team, wins in final_wins.items()}
 
     print("Eliminator Probabilities:", elim_probs)
     print("Qualifier 2 Probabilities:", q2_probs)

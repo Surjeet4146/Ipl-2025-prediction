@@ -1,4 +1,4 @@
-import numpy as np
+import numpy as np 
 
 # Team stats based on IPL 2025 data
 teams = {
@@ -10,18 +10,15 @@ teams = {
 
 # Simulate a single match
 def simulate_match(team1, team2):
-    # Possessions and wickets
     possessions = min(120, int(np.random.normal(120, 10)))
     wickets_t1 = min(10, max(0, int(np.random.normal(6, 1))))
     wickets_t2 = min(10, max(0, int(np.random.normal(6, 1))))
     balls_t1 = min(possessions, 120 - wickets_t1 * 10)
     balls_t2 = min(possessions, 120 - wickets_t2 * 10)
 
-    # Home advantage (randomly assign)
     home_team = np.random.choice([team1, team2])
     home_boost = 0.01 if home_team == team1 else -0.01
 
-    # Simulate runs for team 1
     runs_t1, success_rate_t1 = 0, 0
     for _ in range(balls_t1):
         shot = np.random.choice(["defensive", "aggressive", "boundary"], p=[teams[team1][shot][0] for shot in ["defensive", "aggressive", "boundary"]])
@@ -33,7 +30,6 @@ def simulate_match(team1, team2):
         else:
             success_rate_t1 -= 0.01
 
-    # Simulate runs for team 2
     runs_t2, success_rate_t2 = 0, 0
     for _ in range(balls_t2):
         shot = np.random.choice(["defensive", "aggressive", "boundary"], p=[teams[team2][shot][0] for shot in ["defensive", "aggressive", "boundary"]])
@@ -54,23 +50,19 @@ def simulate_playoffs(num_simulations=10000):
     final_wins = {"RCB": 0, "PBKS": 0, "GT": 0, "MI": 0}
 
     for _ in range(num_simulations):
-        # Eliminator: GT vs MI
         elim_winner = simulate_match("GT", "MI")
         eliminator_wins[elim_winner] += 1
 
-        # Qualifier 2: PBKS vs Eliminator winner
         q2_opponent = elim_winner
         q2_winner = simulate_match("PBKS", q2_opponent)
         qualifier2_wins[q2_winner] += 1
 
-        # Final: RCB vs Qualifier 2 winner
         final_winner = simulate_match("RCB", q2_winner)
         final_wins[final_winner] += 1
 
-    # Calculate probabilities
     elim_probs = {team: wins/num_simulations for team, wins in eliminator_wins.items()}
     q2_probs = {team: wins/num_simulations for team, wins in qualifier2_wins.items()}
-final_probs = {team: wins/num_simulations for team, wins in final_wins.items()}
+    final_probs = {team: wins/num_simulations for team, wins in final_wins.items()}
 
     print("Eliminator Probabilities:", elim_probs)
     print("Qualifier 2 Probabilities:", q2_probs)
